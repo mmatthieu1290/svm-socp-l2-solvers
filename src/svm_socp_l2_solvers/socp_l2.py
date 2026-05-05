@@ -321,7 +321,6 @@ class SOCPL2(BaseEstimator, ClassifierMixin):
         G5 = np.concatenate([-self.kappa2*S2.T,np.zeros((m_neg,3))],axis = 1)
 
         G_full = np.concatenate([G1,G2,G3,G4,G5],axis = 0)
-        print(G_full.shape)
         G = matrix(G_full)
 
         h_full = np.concatenate([np.zeros((2,1)),-np.ones((1,1)),np.zeros((m_pos,1)),-np.ones((1,1)),np.zeros((m_neg,1))],axis = 0)
