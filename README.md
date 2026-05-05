@@ -41,11 +41,11 @@
 
 ## Overview
 
-svm-socp-lp-solvers is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP) and Linear Programming (LP). Designed for high-dimensional and large-scale data, it enables efficient, robust, and interpretable machine learning models.
+svm-socp-l2-solvers is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP) and Linear Programming (LP). Designed for high-dimensional and large-scale data, it enables efficient, robust, and interpretable machine learning models.
 
 **Authors:** Miguel Carrasco, Julio Lopez, Matthieu Marechal
 
-**Why svm-socp-lp-solvers?**
+**Why svm-socp-l2-solvers?**
 
 This project aims to simplify and accelerate the development of SVM-based solutions with cutting-edge convex optimization techniques. The core features include:
 
@@ -125,7 +125,7 @@ This project requires the following dependencies:
 1. **Install the library:**
 
     ```sh
-    pip install git+https://github.com/mmatthieu1290/svm-socp-lp-solvers.git
+    pip install git+https://github.com/mmatthieu1290/svm-socp-l2-solvers.git
     ```
 2. **Import the solvers:**
 
@@ -139,7 +139,7 @@ This project requires the following dependencies:
     from svm_socp_l2_solvers import SVML2
     import pandas as pd
 
-    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
+    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-l2-solvers/main/Titanic.xlsx"
     df = pd.read_excel(url, engine="openpyxl")
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
@@ -155,7 +155,7 @@ This project requires the following dependencies:
     from svm_socp_l2_solvers import SOCPL2
     import pandas as pd
     
-    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
+    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-l2-solvers/main/Titanic.xlsx"
     df = pd.read_excel(url, engine="openpyxl")
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
