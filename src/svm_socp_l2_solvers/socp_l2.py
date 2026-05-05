@@ -41,8 +41,6 @@ class SOCPL2(BaseEstimator, ClassifierMixin):
 
     Parameters
     ----------
-    p : float, default=0.5
-        Exponent controlling sparsity. Must satisfy 0 < p < 1.
 
     C : float, default=1e4
         Slack penalty parameter. Must be > 0.

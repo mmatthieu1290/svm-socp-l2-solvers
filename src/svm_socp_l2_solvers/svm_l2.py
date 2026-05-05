@@ -25,8 +25,6 @@ class SVML2(BaseEstimator, ClassifierMixin):
 
     Parameters
     ----------
-    p : float, default=0.5
-        Exponent controlling sparsity. Must satisfy 0 < p < 1.
 
     C : float, default=1e4
         Slack penalty parameter. Must be > 0.
@@ -39,11 +37,6 @@ class SVML2(BaseEstimator, ClassifierMixin):
         
     max_iter : int, default=100
         Maximum iterations for converging
-
-    tol_select_features: float, default=1e-5
-        Minimum value for coeficients to select corresponding feature. 
-        Warning: if model has been fitted, changing value of tol_select_features changes the attributes
-        n_selected_features_ and selected_feature_names_.   
 
 
     Methods
@@ -72,42 +65,27 @@ class SVML2(BaseEstimator, ClassifierMixin):
     n_iter_ : int
         Number of iterations run.
 
-    fitted_ : bool
-        True after calling fit().
-
     n_features_in_ : int
         Number of detected features after calling fit()
 
     feature_names_in_ : ndarray of shape (n_classes,)
             Names of features seen during :term:`fit`. Defined only when `X` has feature names that are all strings.
 
-    n_selected_features_ : int
-        Number of selected features after calling fit()
-
-    selected_feature_names_ : ndarray
-       Name of selected features seen during :term:`fit`. Defined only when `X` has feature names that are all strings. 
-
-    n_non_zeros_coef_per_iteration_ : ndarray
-       Number of nonzeros componentes of coef_ at each step from step 1.
                  
 
-    Notes
-    -----
-    The problem is nonconvex given that p < 1; the solver may converge to a local
-    minimum depending on the parameters.
 
     Example 
     -----
 
-    from svm_socp_l2_solvers import SVMLp
+    from svm_socp_l2_solvers import SVML2
     import pandas as pd
 
-    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
+    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-l2-solvers/main/datos_Titanic.xlsx"
     df = pd.read_excel(url, engine="openpyxl")
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
 
-    svm = SVMLp(C = 1e7,eps = 1e-4,tol_select_features = 1e-3)
+    svm = SVML2(C = 1e7,eps = 1e-4)
     svm.fit(X,y)
 
     print("Coefs : ",svm.coef_)
@@ -117,12 +95,9 @@ class SVML2(BaseEstimator, ClassifierMixin):
     """
     
 
-    def __init__(self,p=0.5,C=1e4,eps=1e-5,tol=1e-4,max_iter=100,tol_select_features = 1e-5):
+    def __init__(self,C=1e4,eps=1e-5,tol=1e-4,max_iter=100):
 
         
-        self.fitted_ = False
-        self._p = None
-        self.p = p
         self._C = None
         self.C = C 
         self._eps = None
@@ -136,14 +111,8 @@ class SVML2(BaseEstimator, ClassifierMixin):
         self.tol = tol
         self._max_iter = None
         self.max_iter = max_iter      
-        self._tol_select_features = None
-        self.tol_select_features = tol_select_features
 
     
-
-    @property
-    def p(self):
-       return self._p
 
     @property 
     def C(self):
@@ -165,19 +134,7 @@ class SVML2(BaseEstimator, ClassifierMixin):
     def max_iter(self):
         return self._max_iter        
 
-    @property
-    def tol_select_features(self):
-        return self._tol_select_features
 
-
-    @p.setter
-    def p(self,value):
-        if not isinstance(value, float) and not isinstance(value,int):
-            raise TypeError("p must be a float number.")
-        elif (value<=0) or (value>=1):
-            raise ValueError("p must be a real number between 0 and 1")
-        else:
-            self._p = value
 
     @C.setter
     def C(self,value):
@@ -218,23 +175,6 @@ class SVML2(BaseEstimator, ClassifierMixin):
             raise ValueError("max_iter must be a positive number")
         else:
             self._max_iter = value                            
-            
-        
-    @tol_select_features.setter
-    def tol_select_features(self,value):
-        if not isinstance(value, float) and not isinstance(value,int):
-            raise TypeError("tol_select_features must be a float number or an integer number.")
-        elif (value<=0):
-            raise ValueError("tol_select_features must be a positive number")
-        else:
-            self._tol_select_features = value 
-            if hasattr(self,"coef_"):
-
-                mask_selected_features = np.abs(self.coef_) > self.tol_select_features
-                self.n_selected_features_ = int(mask_selected_features.sum())
-
-                if hasattr(self,"feature_names_in_"):
-                   self.selected_feature_names_ = self.feature_names_in_[mask_selected_features]
                
 
     def fit(self,X,y):
