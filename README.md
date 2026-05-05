@@ -59,12 +59,12 @@ This project aims to simplify and accelerate the development of SVM-based soluti
 
 ## Mathematical model 
 
-### SVMLp
+### SVML2
 
  This estimator solves the following optimization problem:
 
 $$
-\min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p + C\sum_{i=1}^m \xi_i
+\min_{w,b,\xi}\ \frac{1}{2}\|w\|^2 + C\sum_{i=1}^m \xi_i
 \quad \mathrm{s.t.}\quad
 y_i (w^\top x_i + b) \ge 1 - \xi_i,\ \xi_i \ge 0,\ i=1,\dots,m.
 $$
@@ -72,12 +72,12 @@ $$
 The smoothing parameter $\varepsilon>0$ makes the objective locally
 Lipschitz and avoids singular behavior at $w_j=0$. The vector $x_i$ contains the features of $i$-th observation and $y_i=\pm1$ is its class.  
 
-### SOCPLp
+### SOCPL2
 
 This estimator solves the following optimization problem:
 
 $$
-\min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p + C \sum_{i=1}^2 \xi_i
+\min_{w,b,\xi}\ \frac{1}{2}\|w\|^2 + C \sum_{i=1}^2 \xi_i
 \quad \mathrm{s.t.}\quad
 \begin{aligned}
 & (w,b,\xi) \in \mathbb{R}^{n+3} \\
@@ -130,13 +130,13 @@ This project requires the following dependencies:
 2. **Import the solvers:**
 
     ```sh
-    from svm_socp_l2_solvers import SVMLp,SOCPLp
+    from svm_socp_l2_solvers import SVML2,SOCPL2
     ```
 ## Examples
 
 ### SVMLp
 
-    from svm_socp_l2_solvers import SVMLp
+    from svm_socp_l2_solvers import SVML2
     import pandas as pd
 
     url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
@@ -144,7 +144,7 @@ This project requires the following dependencies:
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
 
-    svm = SVM_Lp(C = 1e7,eps = 1e-4,tol_select_features = 1e-3)
+    svm = SVML2(C = 1e7,eps = 1e-4,tol_select_features = 1e-3)
     svm.fit(X,y)
 
     print("Coefs : ",svm.coef_)
@@ -152,7 +152,7 @@ This project requires the following dependencies:
 
 ### SOCPLp 
 
-    from svm_socp_l2_solvers import SOCPLp
+    from svm_socp_l2_solvers import SOCPL2
     import pandas as pd
     
     url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
@@ -160,7 +160,7 @@ This project requires the following dependencies:
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
 
-    socp = SOCPLp(p=0.1,alpha_1=0.2,alpha_2=0.2)
+    socp = SOCPL2(p=0.1,alpha_1=0.2,alpha_2=0.2)
     socp.fit(X,y)
 
     print("Coefs : ",socp.coef_)
