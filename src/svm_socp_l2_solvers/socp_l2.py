@@ -3,7 +3,7 @@ from cvxopt import matrix, solvers
 from sklearn.exceptions import NotFittedError
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_array
-from utils import prediction_from_w_b,prediction_probas_from_w_b
+from .utils import prediction_from_w_b,prediction_probas_from_w_b
 
 class SOCPL2(BaseEstimator, ClassifierMixin):
 
